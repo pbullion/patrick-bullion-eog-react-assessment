@@ -1,13 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
 import Chip from "@material-ui/core/Chip";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../store/actions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,7 +40,7 @@ const MenuProps = {
   }
 };
 
-const dataNames = [
+const dataList = [
   "tubingPressure",
   "casingPressure",
   "oilTemp",
@@ -50,10 +49,10 @@ const dataNames = [
   "injValveOpen"
 ];
 
-function getStyles(name, dataName, theme) {
+function getStyles(name, dataNames, theme) {
   return {
     fontWeight:
-      dataName.indexOf(name) === -1
+      dataNames.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium
   };
@@ -62,29 +61,23 @@ function getStyles(name, dataName, theme) {
 export default function MultipleSelect() {
   const classes = useStyles();
   const theme = useTheme();
-  const [dataName, setDataName] = React.useState([]);
+  const [dataNames, setDataName] = React.useState([]);
 
   function handleChange(event) {
     setDataName(event.target.value);
   }
+  const dispatch = useDispatch();
 
-  function handleChangeMultiple(event) {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setDataName(value);
-  }
+  useEffect(() => {
+    dispatch({ type: actions.DATA_NAME_ADDED, dataNames })
+  }, [dataNames]);
 
   return (
     <div className={classes.root}>
       <FormControl className={classes.formControl}>
         <Select
           multiple
-          value={dataName}
+          value={dataNames}
           onChange={handleChange}
           input={<Input id="select-multiple-chip" />}
           renderValue={selected => (
@@ -96,11 +89,11 @@ export default function MultipleSelect() {
           )}
           MenuProps={MenuProps}
         >
-          {dataNames.map(name => (
+          {dataList.map(name => (
             <MenuItem
               key={name}
               value={name}
-              style={getStyles(name, dataName, theme)}
+              style={getStyles(name, dataNames, theme)}
             >
               {name}
             </MenuItem>
