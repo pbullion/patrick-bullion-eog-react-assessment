@@ -9,7 +9,7 @@ const initialState = {
 
 const toF = c => (c * 9) / 5 + 32;
 
-const weatherDataRecevied = (state, action) => {
+const weatherDataReceived = (state, action) => {
   const { getWeatherForLocation } = action;
   const {
     description,
@@ -26,7 +26,7 @@ const weatherDataRecevied = (state, action) => {
 };
 
 const handlers = {
-  [actions.WEATHER_DATA_RECEIVED]: weatherDataRecevied
+  [actions.WEATHER_DATA_RECEIVED]: weatherDataReceived
 };
 
 export default (state = initialState, action) => {
