@@ -23,8 +23,11 @@ query($metricName: String!) {
 `;
 const useStyles = makeStyles({
   card: {
-    margin: "5% 25%"
-  }
+    textAlign: "center",
+    width: 200,
+    height: 150,
+    margin: "2%"
+  },
 });
 
 export default props => {

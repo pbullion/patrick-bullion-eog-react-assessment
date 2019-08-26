@@ -10,12 +10,6 @@ import * as actions from "../store/actions";
 import DataCard from "./DataCard";
 
 const useStyles = makeStyles({
-  card: {
-    textAlign: "center",
-    width: 200,
-    height: 150,
-    margin: "2%"
-  },
   cardRow: {
     display: "flex",
     flexWrap: "wrap"
