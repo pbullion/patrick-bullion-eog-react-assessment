@@ -49,7 +49,7 @@ const DataCard = props => {
     }
   });
 
-  const { fetching, data, error } = result;
+  const { data, error } = result;
   useEffect(() => {
     if (error) {
       dispatch({ type: actions.API_ERROR, error: error.message });
@@ -62,7 +62,7 @@ const DataCard = props => {
       setMetricValues(data.getLastKnownMeasurement);
     }, 1300);
     return () => clearInterval(interval);
-  }, [dispatch, data, error]);
+  }, [dispatch, data, error, executeQuery]);
 
   return (
     <Card className={classes.card}>

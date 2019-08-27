@@ -3,9 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import SearchBar from "./SearchBar";
 import { createClient, Provider, useQuery } from "urql";
 import { useDispatch, useSelector } from "react-redux";
-import Card from "@material-ui/core/Card";
-import CardHeader from "./CardHeader";
-import CardContent from "@material-ui/core/CardContent";
 import * as actions from "../store/actions";
 import DataCard from "./DataCard";
 
@@ -57,15 +54,9 @@ const Dashboard = () => {
     }
     if (!data) return;
     setHeartbeat(data.heartBeat);
-    console.log(data.heartBeat);
     dispatch({ type: actions.HEARTBEAT_UPDATED, heartBeat })
 
-  }, [dispatch, data, error]);
-
-  useEffect(() => {
-    console.log(heartBeat)
-    dispatch({ type: actions.HEARTBEAT_UPDATED, heartBeat })
-  }, [heartBeat]);
+  }, [dispatch, data, heartBeat, error]);
 
   return (
     <Fragment>

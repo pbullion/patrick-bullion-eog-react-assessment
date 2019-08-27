@@ -5,7 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Chip from "@material-ui/core/Chip";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as actions from "../store/actions";
 import {createClient, Provider, useQuery} from "urql";
 
@@ -81,7 +81,7 @@ const SearchBar = () => {
   });
   const [metrics, setMetricNames] = React.useState([]);
 
-  const { fetching, data, error } = result;
+  const { data, error } = result;
   useEffect(() => {
     if (error) {
       dispatch({ type: actions.API_ERROR, error: error.message });
@@ -94,7 +94,7 @@ const SearchBar = () => {
 
   useEffect(() => {
     dispatch({ type: actions.DATA_NAME_ADDED, dataNames })
-  }, [dataNames]);
+  }, [dispatch, dataNames]);
 
   return (
     <div className={classes.root}>
