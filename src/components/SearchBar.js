@@ -7,6 +7,7 @@ import Select from "@material-ui/core/Select";
 import Chip from "@material-ui/core/Chip";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
+import {createClient, Provider, useQuery} from "urql";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,14 +41,14 @@ const MenuProps = {
   }
 };
 
-const dataList = [
-  "tubingPressure",
-  "casingPressure",
-  "oilTemp",
-  "flareTemp",
-  "waterTemp",
-  "injValveOpen"
-];
+const client = createClient({
+  url: "https://react.eogresources.com/graphql"
+});
+const query = `
+query getMetrics {
+  getMetrics
+}
+`;
 
 function getStyles(name, dataNames, theme) {
   return {
@@ -58,7 +59,15 @@ function getStyles(name, dataNames, theme) {
   };
 }
 
-export default function MultipleSelect() {
+export default () => {
+  return (
+      <Provider value={client}>
+        <SearchBar />
+      </Provider>
+  );
+};
+
+const SearchBar = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [dataNames, setDataName] = React.useState([]);
@@ -67,6 +76,21 @@ export default function MultipleSelect() {
     setDataName(event.target.value);
   }
   const dispatch = useDispatch();
+  const [result] = useQuery({
+    query
+  });
+  const [metrics, setMetricNames] = React.useState([]);
+
+  const { fetching, data, error } = result;
+  useEffect(() => {
+    if (error) {
+      dispatch({ type: actions.API_ERROR, error: error.message });
+      return;
+    }
+    if (!data) return;
+    console.log(data);
+    setMetricNames(data.getMetrics);
+  }, [dispatch, data, error]);
 
   useEffect(() => {
     dispatch({ type: actions.DATA_NAME_ADDED, dataNames })
@@ -89,11 +113,11 @@ export default function MultipleSelect() {
           )}
           MenuProps={MenuProps}
         >
-          {dataList.map(name => (
+          {metrics.map(name => (
             <MenuItem
               key={name}
               value={name}
-              style={getStyles(name, dataNames, theme)}
+              style={getStyles(name, metrics, theme)}
             >
               {name}
             </MenuItem>

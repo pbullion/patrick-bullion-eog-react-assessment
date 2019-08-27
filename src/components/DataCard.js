@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 const client = createClient({
   url: "https://react.eogresources.com/graphql"
 });
-
 const query = `
 query($metricName: String!) {
   getLastKnownMeasurement(metricName: $metricName) {
@@ -21,13 +20,14 @@ query($metricName: String!) {
   }
 }
 `;
+
 const useStyles = makeStyles({
   card: {
     textAlign: "center",
     width: 200,
     height: 150,
     margin: "2%"
-  },
+  }
 });
 
 export default props => {
@@ -47,9 +47,9 @@ const DataCard = props => {
       metricName: props.name
     }
   });
-    const [metricValues, setMetricValues] = React.useState([]);
+  const [metricValues, setMetricValues] = React.useState([]);
 
-    const { fetching, data, error } = result;
+  const { fetching, data, error } = result;
   useEffect(() => {
     if (error) {
       dispatch({ type: actions.API_ERROR, error: error.message });
