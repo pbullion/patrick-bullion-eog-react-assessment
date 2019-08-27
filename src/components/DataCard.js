@@ -41,13 +41,13 @@ export default props => {
 const DataCard = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [result] = useQuery({
+  const [metricValues, setMetricValues] = React.useState([]);
+  const [result, executeQuery] = useQuery({
     query,
     variables: {
       metricName: props.name
     }
   });
-  const [metricValues, setMetricValues] = React.useState([]);
 
   const { fetching, data, error } = result;
   useEffect(() => {
@@ -57,6 +57,11 @@ const DataCard = props => {
     }
     if (!data) return;
     setMetricValues(data.getLastKnownMeasurement);
+    const interval = setInterval(() => {
+      executeQuery({ requestPolicy: "network-only" });
+      setMetricValues(data.getLastKnownMeasurement);
+    }, 1300);
+    return () => clearInterval(interval);
   }, [dispatch, data, error]);
 
   return (
