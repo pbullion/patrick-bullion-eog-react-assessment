@@ -16,6 +16,15 @@ const useStyles = makeStyles({
   }
 });
 
+const client = createClient({
+  url: "https://react.eogresources.com/graphql"
+});
+const query = `
+query heartBeat {
+  heartBeat
+}
+`;
+
 const getDataNames = state => {
   const { names } = state.dataNames;
   return {
@@ -25,7 +34,7 @@ const getDataNames = state => {
 
 export default () => {
   return (
-    <Provider>
+    <Provider value={client}>
       <Dashboard />
     </Provider>
   );
@@ -34,7 +43,29 @@ export default () => {
 const Dashboard = () => {
   const classes = useStyles();
   const { names } = useSelector(getDataNames);
-  console.log(names);
+  const dispatch = useDispatch();
+  const [heartBeat, setHeartbeat] = React.useState();
+  const [result] = useQuery({
+    query
+  });
+
+  const { data, error } = result;
+  useEffect(() => {
+    if (error) {
+      dispatch({ type: actions.API_ERROR, error: error.message });
+      return;
+    }
+    if (!data) return;
+    setHeartbeat(data.heartBeat);
+    console.log(data.heartBeat);
+    dispatch({ type: actions.HEARTBEAT_UPDATED, heartBeat })
+
+  }, [dispatch, data, error]);
+
+  useEffect(() => {
+    console.log(heartBeat)
+    dispatch({ type: actions.HEARTBEAT_UPDATED, heartBeat })
+  }, [heartBeat]);
 
   return (
     <Fragment>
