@@ -1,17 +1,18 @@
 import * as actions from "../actions";
 
 const initialState = {
-  heartbeat: null
+  heartBeat: null
 };
 
-const heartbeatUpdated = (state, action) => {
+const heartBeatUpdated = (state, action) => {
+  console.log(action.heartBeat)
   return {
-    heartbeat: action.heartbeat
+    heartBeat: action.heartBeat
   };
 };
 
 const handlers = {
-  [actions.HEARTBEAT_UPDATED]: heartbeatUpdated,
+  [actions.HEARTBEAT_UPDATED]: heartBeatUpdated,
 };
 
 export default (state = initialState, action) => {

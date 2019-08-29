@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchBar from "./SearchBar";
+import Chart from "./Chart";
 import { createClient, Provider, useQuery } from "urql";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
@@ -23,9 +24,9 @@ query heartBeat {
 `;
 
 const getDataNames = state => {
-  const { names } = state.dataNames;
+  const { metricNames } = state.metricNames;
   return {
-    names
+    metricNames
   };
 };
 
@@ -39,9 +40,9 @@ export default () => {
 
 const Dashboard = () => {
   const classes = useStyles();
-  const { names } = useSelector(getDataNames);
+  const { metricNames } = useSelector(getDataNames);
   const dispatch = useDispatch();
-  const [heartBeat, setHeartbeat] = React.useState();
+  const [heartBeat, setHeartBeat] = React.useState();
   const [result] = useQuery({
     query
   });
@@ -53,7 +54,7 @@ const Dashboard = () => {
       return;
     }
     if (!data) return;
-    setHeartbeat(data.heartBeat);
+    setHeartBeat(data.heartBeat);
     dispatch({ type: actions.HEARTBEAT_UPDATED, heartBeat })
 
   }, [dispatch, data, heartBeat, error]);
@@ -62,10 +63,11 @@ const Dashboard = () => {
     <Fragment>
       <SearchBar />
       <div className={classes.cardRow}>
-        {names
-          ? names.map((item, index) => <DataCard name={item.name} key={index}/>)
+        {metricNames
+          ? metricNames.map((item, index) => <DataCard metricName={item.metricName} key={index}/>)
           : null}
       </div>
+      {metricNames ? <Chart /> : null}
     </Fragment>
   );
 };

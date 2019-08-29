@@ -1,27 +1,27 @@
 import * as actions from "../actions";
 
 const initialState = {
-  names: []
+  metricNames: []
 };
 
 const dataNameReceived = (state, action) => {
   const { getDataNamesSelected } = action;
-  const { names } = getDataNamesSelected;
+  const { metricNames } = getDataNamesSelected;
 
   return {
-    names
+    metricNames
   };
 };
 
 const dataNameAdded = (state, action) => {
-  if (action.dataNames.length > 0) {
-    let names = [];
-    action.dataNames.forEach(item => {
-      names.push({ name: item });
+  if (action.metricNames.length > 0) {
+    let metricNames = [];
+    action.metricNames.forEach(item => {
+      metricNames.push({ metricName: item });
     });
-    console.log(names);
+    console.log(metricNames);
     return {
-      names
+      metricNames
     };
   }
   return {

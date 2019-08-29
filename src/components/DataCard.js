@@ -45,7 +45,7 @@ const DataCard = props => {
   const [result, executeQuery] = useQuery({
     query,
     variables: {
-      metricName: props.name
+      metricName: props.metricName
     }
   });
 
@@ -66,7 +66,7 @@ const DataCard = props => {
 
   return (
     <Card className={classes.card}>
-      <CardHeader title={props.name} />
+      <CardHeader title={props.metricName} />
       <CardContent>
         <h2>{metricValues.value}</h2>
       </CardContent>

@@ -50,10 +50,10 @@ query getMetrics {
 }
 `;
 
-function getStyles(name, dataNames, theme) {
+function getStyles(name, metricNames, theme) {
   return {
     fontWeight:
-      dataNames.indexOf(name) === -1
+      metricNames.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium
   };
@@ -70,10 +70,10 @@ export default () => {
 const SearchBar = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const [dataNames, setDataName] = React.useState([]);
+  const [metricNames, setMetricName] = React.useState([]);
 
   function handleChange(event) {
-    setDataName(event.target.value);
+    setMetricName(event.target.value);
   }
   const dispatch = useDispatch();
   const [result] = useQuery({
@@ -93,15 +93,15 @@ const SearchBar = () => {
   }, [dispatch, data, error]);
 
   useEffect(() => {
-    dispatch({ type: actions.DATA_NAME_ADDED, dataNames })
-  }, [dispatch, dataNames]);
+    dispatch({ type: actions.DATA_NAME_ADDED, metricNames })
+  }, [dispatch, metricNames]);
 
   return (
     <div className={classes.root}>
       <FormControl className={classes.formControl}>
         <Select
           multiple
-          value={dataNames}
+          value={metricNames}
           onChange={handleChange}
           input={<Input id="select-multiple-chip" />}
           renderValue={selected => (

@@ -34,7 +34,6 @@ const App = props => (
     <Provider store={store}>
       <Wrapper>
         <Header />
-        {/*<NowWhat />*/}
         <Dashboard />
         <ToastContainer />
       </Wrapper>
