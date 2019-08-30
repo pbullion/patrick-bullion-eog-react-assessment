@@ -89,13 +89,6 @@ const Chart = () => {
       item[item.metric] = item.value;
     });
     setMerged(merged);
-
-    // const interval = setInterval(() => {
-    //   executeQuery({ requestPolicy: "network-only" });
-    //   // TODO add pushing data to new array
-    //   setNewData(newData);
-    // }, 1300);
-    // return () => clearInterval(interval);
   }, [dispatch, data, error, executeQuery]);
   let xAxisTickFormatter = date => {
     return moment.unix(date).format("hh:mm");
